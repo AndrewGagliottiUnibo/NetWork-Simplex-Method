@@ -22,5 +22,5 @@ G.add_edge("4", "5", weight=3, capacity=6)
 flowCost, flowDict = nx.network_simplex(G)
 
 # Objective function: Min 10
-print(flowDict)
-print(flowCost)
+print("Flusso: ", flowDict)
+print("Min z = ", flowCost)
