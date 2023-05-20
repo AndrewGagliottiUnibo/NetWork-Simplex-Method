@@ -13,16 +13,11 @@ class NetSimplex:
         self.neighborhood = []
         self.reverse = False
 
-
-
-
     def get_arc(self, graph, i, j):
         for arc in graph["arc"]:
             if arc["sp"] == i and arc["ep"] == j:
                 return arc
         return None
-
-
 
     # reverse all the arcs of the graph in order to have i<j for each arc
     def reverse_arcs(self, graph):
@@ -33,75 +28,52 @@ class NetSimplex:
                 arc["sp"] = arc["ep"]
                 arc["ep"] = app
 
-
-
     def remove_arc(self, graph, i):
         for arc in graph["arc"]:
             if(arc["sp"] == i or arc["ep"] == i):
                 graph["arc"].remove(arc)
 
-
-
     def get_potential(self, graph, point):
         node = self.get_node(graph,point)
         return node["potential"]
-
-
 
     # point = int
     def get_node(self, graph, point):
         return graph["node"][point-1]
         print("Node not found")
 
-
-
     def remove_node(self, graph, point):
         graph["node"].remove(self.get_node(graph,point))
         self.remove_arc(graph,point)
 
-
-
-
     def update_potential(self,graph,point,change):
         node = self.get_node(graph,point)
         node["potential"] = change
-
-
 
     # node = point
     def get_pred(self, graph, point):
         return self.get_node(graph,point)["pred"]
         print("Pred not found")
 
-
-
     # point = int
     def get_depth(self, graph, point):
         node = self.get_node(graph,point)
         return node["depth"]
-
-
 
     # node = dict
     def set_depth(self, graph, node, depth):
         node = self.get_node(graph, node["point"])
         node["depth"] = depth
 
-
-
     # point = int
     def set_pred(self,graph,point,pred):
         node = self.get_node(graph,point)
         node["pred"] = pred
 
-
-
     # point = int
     def get_thread(self, graph, point):
         node = self.get_node(graph, point)
         return node["thread"]
-
-
 
     def is_foward(self,i,j):
         if(i<j):
@@ -109,12 +81,8 @@ class NetSimplex:
         else:
             return False
 
-
-
     def is_backward(self,i,j):
         return not self.is_foward()
-
-
 
     # compute the predecessor of each node of a given graph
     def compute_pred_and_thread(self,graph):
@@ -123,14 +91,10 @@ class NetSimplex:
         self.dfs(G,1,thread = True, reverse = True)
         self.G["node"] = deepcopy(G["node"])
 
-
-
     # point = int
     def set_thread(self,graph,point,thread):
         node = self.get_node(graph,point)
         node["thread"] = thread
-
-
 
     # compute the depth of a given node of a given graph
     def compute_depth(self, graph, node):
@@ -140,8 +104,6 @@ class NetSimplex:
             pred = self.get_pred(graph,node["point"])
             depth_pred = self.get_depth(graph,pred)
             self.set_depth(graph,node,depth_pred+1)
-
-
 
     def compute_cost(self,graph):
 
@@ -172,8 +134,6 @@ class NetSimplex:
                  '''
                 arc["cost"] = c_ij - pi_i + pi_j
 
-
-
     # get the path from i to j
     def get_path(self,graph,i,j,path):
         if(not len(path)):
@@ -188,8 +148,6 @@ class NetSimplex:
             else:
                 self.get_path(graph,i,pred_j,path)
         return path
-
-
 
     #procedure to identify cyle (return apex)
     def identify_cycle(self, graph, k, l):
@@ -207,8 +165,6 @@ class NetSimplex:
                 j = self.get_pred(graph,j)
         #apex
         return i
-
-
 
     def compute_potentials(self, graph):
         root = self.get_node(graph,1)
@@ -228,8 +184,6 @@ class NetSimplex:
                     cost = arc["cost"]
                     self.update_potential(graph, j, (pi_i + cost))
             j = self.get_thread(graph,j)
-
-
 
     def update_potentials(self, graph, entering, leaving):
         #root node + other nodes
@@ -274,8 +228,6 @@ class NetSimplex:
             self.update_potential(graph,z,(pi_z+change))
             z = self.get_thread(graph,z)
 
-
-
     def get_spanning_tree_stucture(self,graph):
         G = deepcopy(graph)
         self.dfs(G,1, reverse = False)
@@ -294,17 +246,11 @@ class NetSimplex:
         del G
         return self.T, self.L
 
-
-
-
     def optimal(self):
         for arc in self.L:
             if (arc["cost"]<0):
                 return False
         return True
-
-
-
 
     # First eligible arc pivot rule
     def get_entering_arc(self):
@@ -315,14 +261,11 @@ class NetSimplex:
         else:
             return False
 
-
     # entering arc = (k,l)
     def get_leaving_arc(self, graph, entering_arc):
         l = entering_arc["ep"]
         pred_l = self.get_pred(graph,l)
         return self.get_arc(graph,pred_l,l)
-
-
 
     # returns all the nodes reachable from a given node
     def get_neighborhood(self, graph, point):
@@ -332,8 +275,6 @@ class NetSimplex:
                 neighborhood.append(arc["ep"])
                 neighborhood.reverse()
         return neighborhood
-
-
 
     #performs DFS and set thread of all nodes
     def dfs(self, graph, start, thread=False, reverse=False):
@@ -355,14 +296,10 @@ class NetSimplex:
                 else:
                     self.set_thread(graph,v,1)
 
-
-
     def update_tree(self):
         self.T["node"] = deepcopy(self.T1["node"])
         self.G["node"] = deepcopy(self.T1["node"])
         self.G1 = deepcopy(self.G)
-
-
 
 def main():
     j=0
