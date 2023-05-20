@@ -4,6 +4,7 @@ import utilities
 
 class NetSimplex:
 
+    # Inizializza un oggetto grafo
     def __init__(self, type=1):
         self.G = utilities.create_graph(type)
         self.G1 = {"node": [], "arc": []}
@@ -13,13 +14,15 @@ class NetSimplex:
         self.neighborhood = []
         self.reverse = False
 
+#-----------------------------Operazioni sugli archi-----------------------------
+    # Recupera il valore dell'arco
     def get_arc(self, graph, i, j):
         for arc in graph["arc"]:
             if arc["sp"] == i and arc["ep"] == j:
                 return arc
         return None
 
-    # reverse all the arcs of the graph in order to have i<j for each arc
+    # Funzione strutturale
     def reverse_arcs(self, graph):
         G = deepcopy(graph)
         for arc in G["arc"]:
@@ -28,75 +31,66 @@ class NetSimplex:
                 arc["sp"] = arc["ep"]
                 arc["ep"] = app
 
+    # Rimuove un arco
     def remove_arc(self, graph, i):
         for arc in graph["arc"]:
             if (arc["sp"] == i or arc["ep"] == i):
                 graph["arc"].remove(arc)
 
-    def get_potential(self, graph, point):
-        node = self.get_node(graph, point)
-        return node["potential"]
-
-    # point = int
-    def get_node(self, graph, point):
-        return graph["node"][point-1]
-        print("Node not found")
-
-    def remove_node(self, graph, point):
-        graph["node"].remove(self.get_node(graph, point))
-        self.remove_arc(graph, point)
-
-    def update_potential(self, graph, point, change):
-        node = self.get_node(graph, point)
-        node["potential"] = change
-
-    # node = point
-    def get_pred(self, graph, point):
-        return self.get_node(graph, point)["pred"]
-        print("Pred not found")
-
-    # point = int
-    def get_depth(self, graph, point):
-        node = self.get_node(graph, point)
-        return node["depth"]
-
-    # node = dict
-    def set_depth(self, graph, node, depth):
-        node = self.get_node(graph, node["point"])
-        node["depth"] = depth
-
-    # point = int
-    def set_pred(self, graph, point, pred):
-        node = self.get_node(graph, point)
-        node["pred"] = pred
-
-    # point = int
-    def get_thread(self, graph, point):
-        node = self.get_node(graph, point)
-        return node["thread"]
-
+    # Direzione dell'arco
     def is_foward(self, i, j):
         if (i < j):
             return True
         else:
             return False
 
+    # Direzione dell'arco
     def is_backward(self, i, j):
         return not self.is_foward()
 
-    # compute the predecessor of each node of a given graph
-    def compute_pred_and_thread(self, graph):
-        G = deepcopy(graph)
-        self.reverse_arcs(G)
-        self.dfs(G, 1, thread=True, reverse=True)
-        self.G["node"] = deepcopy(G["node"])
-
-    # point = int
-    def set_thread(self, graph, point, thread):
+#-----------------------------Operazioni sui potenziali-----------------------------
+    # Recupera i potenziali
+    def get_potential(self, graph, point):
         node = self.get_node(graph, point)
-        node["thread"] = thread
+        return node["potential"]
 
-    # compute the depth of a given node of a given graph
+    # Aggiorna i potenziali
+    def update_potential(self, graph, point, change):
+        node = self.get_node(graph, point)
+        node["potential"] = change
+
+#-----------------------------Operazioni sui nodi-----------------------------
+    # Recupera i nodi
+    def get_node(self, graph, point):
+        return graph["node"][point-1]
+        print("Node not found")
+
+    # Rimuove i nodi
+    def remove_node(self, graph, point):
+        graph["node"].remove(self.get_node(graph, point))
+        self.remove_arc(graph, point)
+
+    # Recupera il precedente
+    def get_pred(self, graph, point):
+        return self.get_node(graph, point)["pred"]
+        print("Pred not found")
+
+    # Recupera la profondità
+    def get_depth(self, graph, point):
+        node = self.get_node(graph, point)
+        return node["depth"]
+
+    # Imposta la profondità
+    def set_depth(self, graph, node, depth):
+        node = self.get_node(graph, node["point"])
+        node["depth"] = depth
+
+    # Imposta il precedente
+    def set_pred(self, graph, point, pred):
+        node = self.get_node(graph, point)
+        node["pred"] = pred
+
+    # Analizza la profondità di un nodo
     def compute_depth(self, graph, node):
         if (node["point"] == 1):
             self.set_depth(graph, node, 0)
@@ -105,6 +99,26 @@ class NetSimplex:
             depth_pred = self.get_depth(graph, pred)
             self.set_depth(graph, node, depth_pred+1)
 
+    # Analizza il precedente e il flusso
+    def compute_pred_and_thread(self, graph):
+        G = deepcopy(graph)
+        self.reverse_arcs(G)
+        self.dfs(G, 1, thread=True, reverse=True)
+        self.G["node"] = deepcopy(G["node"])
+
+#-----------------------------Operazioni sui flussi-----------------------------
+    # Recupera il flusso
+    def get_thread(self, graph, point):
+        node = self.get_node(graph, point)
+        return node["thread"]
+
+    # Imposta il flusso
+    def set_thread(self, graph, point, thread):
+        node = self.get_node(graph, point)
+        node["thread"] = thread
+
+#-----------------------------Operazioni sui costi-----------------------------
+    # Analizza i costi
     def compute_cost(self, graph):
         if (isinstance(graph, dict)):
             for arc in graph["arc"]:
@@ -121,7 +135,8 @@ class NetSimplex:
                 
                 arc["cost"] = c_ij - pi_i + pi_j
 
-    # get the path from i to j
+#-----------------------------Operazioni sul routing-----------------------------
+    # Recupera il path tra due nodi
     def get_path(self, graph, i, j, path):
         if (not len(path)):
             path.append(j)
@@ -136,6 +151,9 @@ class NetSimplex:
                 self.get_path(graph, i, pred_j, path)
         return path
 
+#
+# START TODO
+#
     # procedure to identify cyle (return apex)
     def identify_cycle(self, graph, k, l):
         i = k
@@ -162,8 +180,14 @@ class NetSimplex:
             pi_i = self.get_potential(graph, i)
             if (self.is_foward(i, j)):
                 arc = self.get_arc(graph, i, j)
+                if (arc is not None):
+                    cost = arc["cost"]
+                    self.update_potential(graph, j, (pi_i - cost))
             else:
                 arc = self.get_arc(graph, j, i)
+                if (arc is not None):
+                    cost = arc["cost"]
+                    self.update_potential(graph, j, (pi_i + cost))
             j = self.get_thread(graph, j)
 
     def update_potentials(self, graph, entering, leaving):
@@ -208,7 +232,12 @@ class NetSimplex:
             pi_z = self.get_potential(graph, z)
             self.update_potential(graph, z, (pi_z+change))
             z = self.get_thread(graph, z)
+#
+# END TODO
+#
 
+#-----------------------------Operazioni sulla struttura-----------------------------
+    # Crea la struttura dello spanning tree
     def get_spanning_tree_stucture(self, graph):
         G = deepcopy(graph)
         self.dfs(G, 1, reverse=False)
@@ -227,6 +256,9 @@ class NetSimplex:
         del G
         return self.T, self.L
 
+#
+# START TODO
+#
     def optimal(self):
         for arc in self.L:
             if (arc["cost"] < 0):
@@ -281,7 +313,9 @@ class NetSimplex:
         self.T["node"] = deepcopy(self.T1["node"])
         self.G["node"] = deepcopy(self.T1["node"])
         self.G1 = deepcopy(self.G)
-
+#
+# END TODO
+#
 
 def main():
     j = 0
