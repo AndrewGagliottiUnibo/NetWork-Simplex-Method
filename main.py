@@ -106,7 +106,6 @@ class NetSimplex:
             self.set_depth(graph, node, depth_pred+1)
 
     def compute_cost(self, graph):
-
         if (isinstance(graph, dict)):
             for arc in graph["arc"]:
                 pi_i = self.get_potential(self.T, arc["sp"])

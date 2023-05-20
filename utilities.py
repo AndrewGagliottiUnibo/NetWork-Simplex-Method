@@ -13,13 +13,13 @@ def create_graph(type):
             {"point": 1, "pred": 0, "depth": 0,
                 "thread": 1, "potential": 10, "balance": 4},
             {"point": 2, "pred": 1, "depth": 0,
-                "thread": 1, "potential": 0, "balance": -1},
+                "thread": 1, "potential": 0, "balance": 0},
             {"point": 3, "pred": 1, "depth": 0,
-                "thread": 1, "potential": 0, "balance": -1},
+                "thread": 1, "potential": 0, "balance": 0},
             {"point": 4, "pred": 1, "depth": 0,
-                "thread": 1, "potential": 0, "balance": -1},
-            {"point": 5, "pred": 3, "depth": 0,
-                "thread": 1, "potential": -10, "balance": -1}
+                "thread": 1, "potential": 0, "balance": 0},
+            {"point": 5, "pred": 2, "depth": 0,
+                "thread": 1, "potential": -10, "balance": -4}
         ],
         # sp = starting point
         # ep = end point
@@ -39,8 +39,6 @@ def create_graph(type):
     return G
 
 # Funzione presa online, disegna il grafo con tutti i cambiamenti di flusso per ogni iterazione
-
-
 def print_structure(T, L=None, G=None):
     if G is not None:
         print("=" * 100)
@@ -87,8 +85,6 @@ def print_structure(T, L=None, G=None):
         print("\n")
 
 # Funzione presa online, disegna il grafo con tutti i cambiamenti di flusso per ogni iterazione
-
-
 def draw_graph(graph, title, name, L=None, entering=None, spanning=None, leaving=None, arcs=None):
     plt.figure(figsize=(9, 9))
 
