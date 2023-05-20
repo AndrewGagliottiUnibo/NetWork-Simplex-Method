@@ -112,25 +112,13 @@ class NetSimplex:
                 pi_j = self.get_potential(self.T, arc["ep"])
                 c_ij = self.get_arc(self.G, arc["sp"], arc["ep"])["cost"]
 
-                '''
-                print("(",arc["sp"],arc["ep"], c_ij,")")
-                print("P_i", pi_i)
-                print("P_j", pi_j)
-                print("\n")
-                '''
-
                 arc["cost"] = c_ij - pi_i + pi_j
         else:
             for arc in graph:
                 pi_i = self.get_potential(self.T, arc["sp"])
                 pi_j = self.get_potential(self.T, arc["ep"])
                 c_ij = self.get_arc(self.G, arc["sp"], arc["ep"])["cost"]
-                '''
-                 print("(",arc["sp"],arc["ep"], c_ij,")")
-                 print("P_i", pi_i)
-                 print("P_j", pi_j)
-                 print("\n")
-                 '''
+                
                 arc["cost"] = c_ij - pi_i + pi_j
 
     # get the path from i to j

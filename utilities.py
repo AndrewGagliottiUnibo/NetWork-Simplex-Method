@@ -11,15 +11,19 @@ def create_graph(type):
 
         "node": [
             {"point": 1, "pred": 0, "depth": 0,
-                "thread": 1, "potential": 10, "balance": 4},
-            {"point": 2, "pred": 1, "depth": 0,
+                "thread": 1, "potential": 10, "balance": 0},
+            {"point": 2, "pred": 1, "depth": 1,
                 "thread": 1, "potential": 0, "balance": 0},
-            {"point": 3, "pred": 1, "depth": 0,
+            {"point": 3, "pred": 1, "depth": 1,
                 "thread": 1, "potential": 0, "balance": 0},
-            {"point": 4, "pred": 1, "depth": 0,
+            {"point": 4, "pred": 1, "depth": 1,
                 "thread": 1, "potential": 0, "balance": 0},
-            {"point": 5, "pred": 2, "depth": 0,
-                "thread": 1, "potential": -10, "balance": -4}
+            {"point": 5, "pred": 3, "depth": 2,
+                "thread": 1, "potential": -10, "balance": 0},
+            {"point": 5, "pred": 4, "depth": 2,
+                "thread": 1, "potential": -10, "balance": 0},
+            {"point": 5, "pred": 2, "depth": 2,
+                "thread": 1, "potential": -10, "balance": 0}
         ],
         # sp = starting point
         # ep = end point
@@ -33,7 +37,6 @@ def create_graph(type):
             {"sp": 3, "ep": 5, "cost": 7},
             {"sp": 3, "ep": 4, "cost": 3},
             {"sp": 4, "ep": 5, "cost": 3},
-
         ]
     }
     return G
