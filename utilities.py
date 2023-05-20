@@ -4,44 +4,29 @@ import matplotlib.pyplot as plt
 
 def create_graph(type):
     G = {
-        # point = the node
-        # pred = predecessor
-        # depth = number of the nodes on the path root-node
-        # thread
-
         "node": [
-            {"point": 1, "pred": 0, "depth": 0,
-                "thread": 1, "potential": 10, "balance": 0},
-            {"point": 2, "pred": 1, "depth": 1,
-                "thread": 1, "potential": 0, "balance": 0},
-            {"point": 3, "pred": 1, "depth": 1,
-                "thread": 1, "potential": 0, "balance": 0},
-            {"point": 4, "pred": 1, "depth": 1,
-                "thread": 1, "potential": 0, "balance": 0},
-            {"point": 5, "pred": 3, "depth": 2,
-                "thread": 1, "potential": -10, "balance": 0},
-            {"point": 5, "pred": 4, "depth": 2,
-                "thread": 1, "potential": -10, "balance": 0},
-            {"point": 5, "pred": 2, "depth": 2,
-                "thread": 1, "potential": -10, "balance": 0}
+            {"point": 1, "pred": 0, "depth": 0, "potential": 10},
+            {"point": 2, "pred": 1, "depth": 1, "potential": 0},
+            {"point": 3, "pred": 1, "depth": 1, "potential": 0},
+            {"point": 4, "pred": 1, "depth": 1, "potential": 0},
+            {"point": 5, "pred": 3, "depth": 2, "potential": -10},
+            {"point": 5, "pred": 4, "depth": 2, "potential": -10},
+            {"point": 5, "pred": 2, "depth": 2, "potential": -10}
         ],
-        # sp = starting point
-        # ep = end point
-        # cost = the cost to reach ep from sp
         "arc": [
-            {"sp": 1, "ep": 2, "cost": 10},
-            {"sp": 1, "ep": 3, "cost": 12},
-            {"sp": 1, "ep": 4, "cost": 6},
-            {"sp": 2, "ep": 5, "cost": 3},
-            {"sp": 3, "ep": 2, "cost": 2},
-            {"sp": 3, "ep": 5, "cost": 7},
-            {"sp": 3, "ep": 4, "cost": 3},
-            {"sp": 4, "ep": 5, "cost": 3},
+            {"sp": 1, "ep": 2, "cost": 10, "thread": 5},
+            {"sp": 1, "ep": 3, "cost": 12, "thread": 3},
+            {"sp": 1, "ep": 4, "cost": 6, "thread": 4},
+            {"sp": 2, "ep": 5, "cost": 3, "thread": 6},
+            {"sp": 3, "ep": 2, "cost": 2, "thread": 2},
+            {"sp": 3, "ep": 5, "cost": 7, "thread": 5},
+            {"sp": 3, "ep": 4, "cost": 3, "thread": 5},
+            {"sp": 4, "ep": 5, "cost": 3, "thread": 6},
         ]
     }
     return G
 
-# Funzione presa online, disegna il grafo con tutti i cambiamenti di flusso per ogni iterazione
+# Funzione presa online, stampa i dati di ogni iterazione
 def print_structure(T, L=None, G=None):
     if G is not None:
         print("=" * 100)
