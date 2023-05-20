@@ -162,14 +162,8 @@ class NetSimplex:
             pi_i = self.get_potential(graph, i)
             if (self.is_foward(i, j)):
                 arc = self.get_arc(graph, i, j)
-                if (arc is not None):
-                    cost = arc["cost"]
-                    self.update_potential(graph, j, (pi_i - cost))
             else:
                 arc = self.get_arc(graph, j, i)
-                if (arc is not None):
-                    cost = arc["cost"]
-                    self.update_potential(graph, j, (pi_i + cost))
             j = self.get_thread(graph, j)
 
     def update_potentials(self, graph, entering, leaving):
